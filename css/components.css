@@ -1,0 +1,365 @@
+/* Debenhams Group Design System — components.
+ *
+ * Every rule reads brand tokens from tokens.css, so the whole sheet re-themes
+ * by setting data-brand="plt|debenhams|boohoo|boohooman|karenmillen" on any
+ * ancestor (usually <html>). Sources: the Group DS Figma (buttons 12681-158518,
+ * product card 5992-10841, size selector 8942-6191, USP box 3619-10541,
+ * payment buttons 9144-1931, roundels 8469-2351/2307) and the
+ * SEEL-Enhancements-2026 per-brand frames.
+ */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-weight: var(--w-regular);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Type scale (typography.ts) ─────────────────────────────────────────── */
+.t-display { font-family: var(--font-display); font-style: var(--font-display-style); font-weight: var(--w-display); font-size: 32px; line-height: 38px; }
+.t-h1      { font-weight: var(--w-bold); font-size: 28px; line-height: 34px; }
+.t-h2      { font-weight: var(--w-bold); font-size: 22px; line-height: 28px; }
+.t-h3      { font-weight: var(--w-bold); font-size: 18px; line-height: 24px; }
+.t-body-lg { font-weight: var(--w-regular); font-size: 16px; line-height: 22px; }
+.t-body    { font-weight: var(--w-regular); font-size: 14px; line-height: 20px; }
+.t-body-md { font-weight: var(--w-medium); font-size: 14px; line-height: 20px; }
+.t-body-b  { font-weight: var(--w-bold); font-size: 14px; line-height: 20px; }
+.t-caption { font-weight: var(--w-regular); font-size: 12px; line-height: 16px; color: var(--stone); }
+.t-caption-b { font-weight: var(--w-bold); font-size: 12px; line-height: 16px; }
+.t-price   { font-weight: var(--w-bold); font-size: 20px; line-height: 26px; }
+/* DS Roundels Strip label (8469-2351): Antonio Bold, vertically trimmed */
+.t-roundel { font-family: 'Antonio', sans-serif; font-weight: 700; font-size: 22px; line-height: 22px; text-transform: uppercase; }
+/* PLT sets everything in caps; the token is `none` on the other brands */
+.caps { text-transform: var(--caps); }
+
+/* ── Buttons (per-brand DS frames; PLT skin ≠ group skin) ───────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font);
+  border-radius: var(--radius-button);
+  height: 50px;
+  padding: 8px 24px;
+  font-weight: var(--w-semibold);
+  font-size: 16px;
+  line-height: 24px;
+  width: 100%;
+}
+.btn:disabled { cursor: default; }
+.btn .icon { width: 20px; height: 20px; }
+.btn .icon-24 { width: 24px; height: 24px; }
+.btn .icon-16 { width: 16px; height: 16px; }
+
+/* Buy It Now */
+.btn--buy { background: var(--cta); color: var(--white); text-transform: uppercase; }
+.btn--buy:active { background: var(--dark-2); }
+[data-brand="plt"] .btn--buy:active { background: var(--dark-1); }
+.btn--buy:disabled { background: var(--dark-2); color: var(--white); }
+[data-brand="plt"] .btn--buy:disabled { background: var(--grey-05); color: var(--grey-3); }
+
+/* Primary — label follows the fill's lightness (Debenhams aqua & boohoo pink
+ * carry black; set per brand rather than computed in CSS) */
+.btn--primary { background: var(--primary); color: var(--white); text-transform: uppercase; }
+[data-brand="plt"] .btn--primary { color: var(--background-white); }
+[data-brand="debenhams"] .btn--primary,
+[data-brand="boohoo"] .btn--primary { color: var(--black); }
+.btn--primary:active { background: var(--dark-1); }
+.btn--primary:disabled { background: var(--neutral); color: var(--grey-3); }
+[data-brand="plt"] .btn--primary:disabled { background: var(--grey-05); color: var(--grey-3); }
+
+/* Secondary */
+.btn--secondary { background: var(--background-white); color: var(--black); border: 1px solid var(--dark-2); }
+.btn--secondary:active { background: var(--light-4); }
+.btn--secondary:disabled { background: var(--background-white); color: var(--grey-3); border-color: var(--neutral); }
+[data-brand="plt"] .btn--secondary {
+  background: transparent;
+  border-color: var(--grey-3);
+  font-weight: var(--w-regular);
+  font-size: 14px;
+  padding: 8px 16px;
+}
+[data-brand="plt"] .btn--secondary:active { background: var(--background-white); }
+[data-brand="plt"] .btn--secondary:disabled { border-color: var(--neutral); color: var(--grey-3); }
+
+/* Tertiary + XS — hug their label */
+.btn--tertiary { width: auto; height: 40px; padding: 8px 16px; background: var(--neutral); color: var(--black); font-weight: var(--w-regular); font-size: 14px; }
+.btn--tertiary:active { background: var(--neutral-pressed); }
+[data-brand="plt"] .btn--tertiary:active { background: var(--light-4); }
+.btn--tertiary:disabled { background: var(--grey-1); color: var(--grey-3); }
+.btn--tertiary-xs { width: auto; height: auto; padding: 8px; background: var(--neutral); color: var(--soft-black); font-weight: var(--w-regular); font-size: 12px; line-height: 16px; }
+.btn--tertiary-xs:active { background: var(--neutral-pressed); }
+[data-brand="plt"] .btn--tertiary-xs:active { background: var(--light-4); }
+.btn--tertiary-xs:disabled { background: var(--grey-1); color: var(--grey-3); }
+
+/* Text only */
+.btn--text { width: auto; min-height: 34px; height: auto; padding: 5px 24px; background: none; color: var(--cta); font-weight: var(--w-semibold); font-size: 14px; }
+.btn--text:active { color: var(--primary-dark); }
+.btn--text:disabled { color: var(--dark-2); }
+
+/* ── Payment buttons (9144-1931) — exact artwork via assets/payments ───── */
+.pay-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 50px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+}
+.pay-btn img, .pay-btn svg { display: block; }
+.pay-btn--mini { width: 114px; }
+.pay-btn--yellow { background: #FFC439; }        .pay-btn--yellow:active { background: #F2BA36; }
+.pay-btn--silver { background: #F2F2F2; }        .pay-btn--silver:active { background: #E7E7E7; }
+.pay-btn--white  { background: #FFFFFF; border: 1px solid #000000; }
+.pay-btn--white:active { background: #F2F2F2; }
+.pay-btn--black  { background: #000000; color: #FFFFFF; }
+.pay-btn--black:active { background: #323232; }
+.pay-btn--gwhite { background: #FFFFFF; border: 1px solid #3C4043; }
+.pay-btn--gwhite:active { background: #F2F2F2; }
+.pay-btn--klarna { background: #0B051D; color: #FFFFFF; }
+.pay-btn--clearpay { background: #B2FCE4; }
+/* Glass: fully round + translucent fill — internals identical */
+.pay-btn--glass { border-radius: 25px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.pay-btn--glass.pay-btn--black { background: rgba(0, 0, 0, 0.82); }
+
+/* ── Product card (5992-10841) ──────────────────────────────────────────── */
+.card { width: 170px; display: flex; flex-direction: column; gap: 12px; font-family: var(--font); }
+.card__image { position: relative; aspect-ratio: 170 / 255; background: var(--grey-1); overflow: hidden; }
+.card__image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Actions — PLT: 24px sharp glass chip · group: 32px white circle + shadow */
+.card__actions { position: absolute; top: 8px; right: 8px; display: flex; flex-direction: column; gap: 8px; }
+.card__action {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--paper); border: none; cursor: pointer;
+  box-shadow: var(--shadow-card-action);
+  display: grid; place-items: center; padding: 0;
+}
+.card__action svg { width: 16px; height: 16px; }
+[data-brand="plt"] .card__action {
+  width: 24px; height: 24px; border-radius: 0;
+  background: rgba(255, 253, 247, 0.5);
+  backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+  box-shadow: none;
+}
+[data-brand="plt"] .card__action svg { width: 12px; height: 12px; }
+/* Tag (fit/range label only — never a discount) */
+.card__tag {
+  position: absolute; left: 12px; bottom: 12px; height: 28px;
+  display: inline-flex; align-items: center; padding: 4px 8px;
+  background: var(--white); border: 1px solid var(--grey-2); border-radius: 4px;
+  font-weight: var(--w-light, var(--w-regular)); font-size: 12px; color: var(--black);
+}
+.card__brand { font-weight: var(--w-semibold); font-size: 14px; line-height: 18px; color: var(--black); }
+[data-brand="plt"] .card__brand { display: none; }
+.card__title { font-weight: var(--w-regular); font-size: 14px; line-height: 18px; color: var(--black); margin: 0; }
+.card__price-row { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.card__price { font-weight: var(--w-semibold); color: var(--danger); }
+.card__was { text-decoration: line-through; color: var(--black); }
+.card__saving { font-weight: var(--w-light, var(--w-regular)); color: var(--danger); }
+/* Swatches: 20px chips, 4px radius, selected ringed in black */
+.card__swatches { display: flex; align-items: center; gap: 4px; height: 20px; font-size: 14px; }
+.card__swatch { width: 20px; height: 20px; border-radius: 4px; border: 1px solid var(--grey-2); padding: 1px; background: transparent; cursor: pointer; }
+.card__swatch > i { display: block; width: 100%; height: 100%; border-radius: 3px; }
+.card__swatch--selected { border-color: var(--black); }
+
+/* ── Size selector (8942-6191) ──────────────────────────────────────────── */
+.sizes { display: flex; flex-wrap: wrap; gap: 8px; }
+.sizes__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 14px; }
+.size {
+  min-width: 60px; height: 50px; padding: 0 16px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--background-white);
+  border: 1px solid var(--grey-3); border-radius: var(--radius);
+  font-family: var(--font); font-weight: var(--w-light); font-size: 16px; color: var(--black);
+  cursor: pointer; position: relative; overflow: hidden;
+}
+.size--selected { border-color: var(--black); font-weight: var(--w-regular); }
+.size--oos { color: var(--grey-3); }
+.size--oos::after {
+  content: ''; position: absolute; left: -20%; right: -20%; top: 50%;
+  height: 1px; background: var(--grey-3); transform: rotate(-33deg);
+}
+
+/* ── USP box (3619-10541) ───────────────────────────────────────────────── */
+.usp-box {
+  background: var(--background-white);
+  border: 1px solid var(--grey-2); border-radius: var(--radius);
+  padding: 16px; display: flex; flex-direction: column; gap: 16px;
+}
+.usp-box__row { display: flex; align-items: center; gap: 16px; }
+.usp-box__row svg, .usp-box__row img { width: 24px; height: 24px; flex: none; }
+.usp-box__title { font-weight: var(--w-light); font-size: 14px; line-height: 18px; color: var(--black); }
+.usp-box__sub { font-weight: var(--w-light); font-size: 12px; line-height: 15px; color: var(--grey-5); }
+
+/* ── USP banner (rotating strip; countdown red on black, black on light) ── */
+.usp-banner {
+  height: 56px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: var(--grey-05); text-align: center;
+}
+.usp-banner__line { font-weight: var(--w-bold); font-size: 12px; line-height: 16px; }
+.usp-banner__countdown { font-weight: var(--w-bold); font-size: 12px; line-height: 16px; color: var(--black); }
+.usp-banner--dark { background: var(--black); }
+.usp-banner--dark .usp-banner__line { color: var(--white); }
+.usp-banner--dark .usp-banner__countdown { color: var(--red); }
+
+/* ── Free-delivery threshold banner (38-35751 / 38-36504) ───────────────── */
+.threshold { display: flex; flex-direction: column; gap: 12px; font-size: 14px; }
+.threshold__copy { font-weight: var(--w-light); color: var(--black); }
+.threshold__copy b { font-weight: var(--w-bold); }
+.threshold__track { height: 4px; border-radius: 100px; background: var(--grey-2); overflow: hidden; }
+.threshold__fill { height: 100%; border-radius: 100px; background: var(--dark-3); }
+.threshold--eligible { flex-direction: row; align-items: center; gap: 12px; }
+
+/* ── SEEL / Deliver+ (per-brand frames, SEEL-Enhancements-2026) ─────────── */
+.seel-banner {
+  background: linear-gradient(90deg, var(--seel-bg), var(--seel-bg-2));
+  color: var(--seel-fg);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  display: flex; align-items: center; gap: 24px;
+}
+.seel-banner__col { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+.seel-banner__headline { font-weight: var(--w-bold); font-size: 14px; line-height: 18px; margin: 0; }
+.seel-banner__ticks { display: flex; flex-direction: column; gap: 8px; }
+.seel-banner__tick { display: flex; align-items: center; gap: 8px; font-weight: var(--w-light); font-size: 12px; line-height: 15px; }
+.seel-banner__tick svg { width: 16px; height: 16px; flex: none; }
+.seel-banner__learn { font-weight: var(--w-bold); font-size: 14px; line-height: 18.2px; color: var(--seel-learn); cursor: pointer; }
+[data-brand="debenhams"] .seel-banner__learn { font-weight: var(--w-semibold); }
+.seel-banner__pitch { font-weight: var(--w-regular); font-size: 14px; line-height: 18px; margin: 0; }
+.seel-banner__pitch b { font-weight: var(--w-bold); }
+.seel-banner__pitch-sub { font-weight: var(--w-regular); font-size: 12px; line-height: 16px; margin: 0; }
+/* checkout variant: 24px brand checkbox */
+.seel-banner__check {
+  width: 24px; height: 24px; flex: none; border: 1px solid var(--seel-check);
+  background: var(--seel-check); border-radius: 3px;
+  display: grid; place-items: center; cursor: pointer; padding: 0;
+}
+[data-brand="plt"] .seel-banner__check { border-radius: 0; }
+.seel-banner__check svg { width: 16px; height: 16px; }
+.seel-banner__check[aria-checked="false"] { background: transparent; }
+
+/* Deliver+ bag module: brand band + white body of benefit rows */
+.seel-module { background: #FFFFFF; border-radius: var(--radius); overflow: hidden; }
+.seel-module__band {
+  background: linear-gradient(90deg, var(--seel-bg), var(--seel-bg-2));
+  color: var(--seel-fg); padding: 16px 20px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.seel-module__band .seel-banner__headline { display: none; }
+[data-brand="plt"] .seel-module__band .seel-banner__headline { display: block; }
+.seel-module__body { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.seel-module__row { display: flex; align-items: center; gap: 12px; }
+/* PLT's frame has no Holiday prize row */
+[data-brand="plt"] .seel-module__row--holiday { display: none; }
+.seel-module__puck {
+  width: 48px; height: 48px; border-radius: 50%; flex: none;
+  background: #FFFFFF; box-shadow: var(--shadow-icon-puck);
+  display: grid; place-items: center;
+}
+.seel-module__puck img { width: 24px; height: 24px; }
+.seel-module__puck .badge-48 { position: relative; width: 24px; height: 24px; display: grid; place-items: center; }
+.seel-module__puck .badge-48 img { width: 23px; height: 23px; }
+.seel-module__puck .badge-48 b { position: absolute; font-size: 10px; font-weight: var(--w-bold); color: #000; }
+.seel-module__title { font-weight: var(--w-semibold); font-size: 14px; line-height: 17px; color: #000; margin: 0; }
+.seel-module__sub { font-weight: var(--w-light); font-size: 12px; line-height: 16px; color: #000; margin: 2px 0 0; }
+.seel-module__powered {
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  font-weight: var(--w-light); font-size: 12px; color: #595959;
+}
+.seel-module__powered img { width: 26px; height: 16px; object-fit: cover; }
+
+/* Deliver+ lockups — exact artwork, one block per brand */
+.dp-lockup { display: none; }
+[data-brand="plt"] .dp-lockup--plt,
+[data-brand="debenhams"] .dp-lockup--debenhams,
+[data-brand="boohoo"] .dp-lockup--boohoo,
+[data-brand="boohooman"] .dp-lockup--boohooman,
+[data-brand="karenmillen"] .dp-lockup--karenmillen { display: block; }
+.dp-lockup--plt { position: relative; width: 113px; height: 40px; }
+.dp-lockup--plt img { position: absolute; }
+.dp-lockup--debenhams { position: relative; width: 142px; height: 30px; }
+.dp-lockup--boohoo img { width: 200px; height: 19px; display: block; }
+.dp-lockup--boohooman img { width: 121px; height: 15px; display: block; }
+.dp-lockup--karenmillen { width: 134px; }
+.dp-lockup--karenmillen img { display: block; }
+
+/* ── BNPL box (2969-10048) ──────────────────────────────────────────────── */
+.bnpl {
+  background: var(--background-white);
+  border: 1px solid var(--grey-2); border-radius: var(--radius);
+  padding: 16px; display: flex; flex-direction: column; gap: 12px;
+  font-size: 14px;
+}
+.bnpl__chips { display: flex; gap: 4px; }
+.bnpl__chip { width: 32px; height: 22px; border-radius: 3px; display: grid; place-items: center; overflow: hidden; }
+.bnpl__chip img, .bnpl__chip svg { max-width: 27px; max-height: 14px; }
+.bnpl__chip--payplus { background: #003B61; }
+.bnpl__chip--klarna { background: #FFB1D2; }
+.bnpl__chip--clearpay { background: #B2FCE3; }
+.bnpl__chip--paypal { background: #FFF; border: 1px solid var(--grey-2); }
+.bnpl__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.bnpl__terms { font-weight: var(--w-light); color: var(--black); }
+.bnpl__terms b { font-weight: var(--w-semibold); }
+.bnpl__link { font-weight: var(--w-light); font-size: 14px; color: var(--black); cursor: pointer; }
+.bnpl__small { font-weight: var(--w-light); font-size: 12px; color: var(--grey-5); }
+
+/* ── Roundels strip (8469-2351 / 8469-2307) ─────────────────────────────── */
+.roundels { display: flex; gap: 4px; padding: 16px; overflow-x: auto; }
+.roundel {
+  width: 108px; height: 108px; border-radius: 50%; flex: none;
+  position: relative; overflow: hidden;
+  display: grid; place-items: center; padding: 12px;
+  background: var(--grey-1); cursor: pointer; border: none;
+}
+.roundel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.roundel--label::after { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.3); }
+.roundel span { position: relative; z-index: 1; color: #FFF; text-align: center; }
+
+/* ── Section header + rails ─────────────────────────────────────────────── */
+.section-header { display: flex; align-items: baseline; justify-content: space-between; padding: 8px 0; }
+.section-header h3 { font-weight: var(--w-medium); font-size: 20px; line-height: 22px; margin: 0; }
+.section-header a { font-weight: var(--w-regular); font-size: 14px; color: var(--ink); text-decoration: none; cursor: pointer; }
+.rail { display: flex; gap: var(--block-gap); overflow-x: auto; }
+
+/* ── Account: rewards band + rows (Account-2026) ────────────────────────── */
+.rewards {
+  border-radius: var(--radius); padding: 16px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.rewards__label { font-weight: var(--w-medium); font-size: 14px; }
+.rewards__amount { font-weight: var(--w-bold); font-size: 44px; line-height: 1; }
+.rewards__amount small { font-size: 24px; }
+.acc-row {
+  display: flex; align-items: center; gap: 16px; height: 64px;
+  font-weight: var(--w-regular); font-size: 16px; color: var(--ink);
+}
+.acc-row__icon {
+  width: 48px; height: 48px; border-radius: 50%; flex: none;
+  background: var(--paper); box-shadow: var(--shadow-card);
+  display: grid; place-items: center;
+}
+.acc-row__badge {
+  margin-left: auto; background: var(--black); color: var(--paper);
+  border-radius: 999px; height: 24px; padding: 0 12px;
+  display: inline-flex; align-items: center;
+  font-weight: var(--w-bold); font-size: 12px;
+}
+
+/* ── Empty state (Empty-Pages format) ───────────────────────────────────── */
+.empty { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 24px 16px; text-align: center; }
+.empty svg { width: 32px; height: 32px; }
+.empty p { font-weight: var(--w-regular); font-size: 16px; line-height: 23px; color: var(--black); margin: 0; }

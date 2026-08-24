@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en" data-brand="plt">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Group Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Geologica:wght@300;400;600&family=Montserrat:wght@400;500;600;700&family=Jost:wght@300;400;500;600;700&family=Antonio:wght@700&family=Cardo:ital@1&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/tokens.css" />
+<link rel="stylesheet" href="css/components.css" />
+<style>
+  /* library chrome only — components live in components.css.
+   * Chrome is deliberately neutral (Roboto, fixed radii) so only the
+   * component demos re-theme when the brand switches. */
+  body { background: var(--grey-1); }
+  .chrome { font-family: 'Roboto', sans-serif; font-weight: 400; text-transform: none; }
+
+  /* ── top bar: title + brand switcher ── */
+  .top-bar { position: sticky; top: 0; z-index: 40; background: #fff; border-bottom: 1px solid var(--grey-2); box-shadow: 0 1px 0 rgba(0,0,0,0.02); }
+  .top-bar__inner { max-width: 1720px; margin: 0 auto; padding: 10px 28px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .top-bar__name { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--soft-black); white-space: nowrap; }
+  .top-bar__sub { margin: 2px 0 0; font-size: 11.5px; color: var(--grey-4); }
+  .brand-switch { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .brand-switch__label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey-4); }
+  .brand-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .brand-tab { display: inline-flex; align-items: center; gap: 9px; padding: 5px 16px 5px 6px; border: 1.5px solid var(--grey-2); border-radius: 999px; background: #fff; cursor: pointer; font-family: 'Roboto', sans-serif; font-size: 13px; font-weight: 600; color: var(--grey-5); transition: border-color 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s; }
+  .brand-tab img { width: 28px; height: 28px; border-radius: 8px; display: block; }
+  .brand-tab:hover { border-color: var(--grey-3); color: var(--soft-black); }
+  .brand-tab:focus-visible { outline: 2px solid var(--system-cursor); outline-offset: 2px; }
+  .brand-tab[aria-selected="true"] { background: var(--soft-black); border-color: var(--soft-black); color: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+  @media (max-width: 1100px) { .top-bar__sub { display: none; } }
+  @media (max-width: 860px) {
+    .top-bar__inner { padding: 10px 16px; }
+    .brand-switch { margin-left: 0; width: 100%; }
+    .brand-tab span { display: none; }
+    .brand-tab { padding: 4px; }
+    .brand-switch__label { display: none; }
+  }
+
+  /* ── hero: active brand strip ── */
+  .hero { background: var(--paper); border-bottom: 1px solid var(--grey-2); }
+  .hero__inner { max-width: 1720px; margin: 0 auto; padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  .lib-logo { height: 30px; display: block; max-width: 100%; }
+  .lib-logo img { height: 100%; max-width: 100%; object-fit: contain; object-position: left center; display: block; }
+  .hero__meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .meta-chip { font-size: 12px; font-weight: 500; padding: 7px 14px; border: 1px solid var(--grey-2); border-radius: 999px; color: var(--grey-5); background: rgba(0,0,0,0.025); white-space: nowrap; }
+  .meta-chip b { color: var(--soft-black); font-weight: 700; }
+
+  /* ── page grid: grouped sections, masonry columns ── */
+  .lib { max-width: 1720px; margin: 0 auto; padding: 32px 28px 96px; }
+  .lib-group { margin-top: 44px; }
+  .lib-group:first-of-type { margin-top: 0; }
+  .lib-group__head { display: flex; align-items: baseline; gap: 12px; margin: 0 0 18px; padding-bottom: 10px; border-bottom: 1px solid var(--grey-25); }
+  .lib-group__head h2 { margin: 0; font-size: 18px; font-weight: 700; color: var(--soft-black); letter-spacing: 0.01em; }
+  .lib-group__head p { margin: 0; font-size: 12px; color: var(--grey-4); }
+  .lib-grid { columns: 370px; column-gap: 22px; }
+  .lib-grid--foundations { columns: auto; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+  @media (max-width: 980px) { .lib-grid--foundations { grid-template-columns: minmax(0, 1fr); } }
+
+  /* ── section cards ── */
+  .lib-section { break-inside: avoid; margin-bottom: 22px; background: var(--paper); border: 1px solid var(--grey-2); border-radius: 14px; box-shadow: var(--shadow-card); overflow: hidden; }
+  .lib-grid--foundations .lib-section { margin-bottom: 0; }
+  .lib-section > h3 { margin: 0; padding: 12px 18px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey-4); background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--grey-2); }
+  .panel { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); gap: 14px 8px; }
+  .swatch { text-align: center; font-size: 10px; font-family: 'Roboto', sans-serif; color: var(--stone); word-break: break-word; }
+  .swatch i { display: block; width: 40px; height: 40px; margin: 0 auto 5px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.08); }
+  .inline { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .note { font-size: 12px; font-family: 'Roboto', sans-serif; color: var(--stone); }
+</style>
+</head>
+<body>
+
+<header class="top-bar chrome">
+  <div class="top-bar__inner">
+    <div>
+      <h1 class="top-bar__name">Group Design System</h1>
+      <p class="top-bar__sub">Extracted from the app prototype — everything re-themes from <code>data-brand</code> on <code>&lt;html&gt;</code>.</p>
+    </div>
+    <nav class="brand-switch" aria-label="Brand">
+      <span class="brand-switch__label">Brand</span>
+      <div class="brand-tabs" role="tablist">
+        <button class="brand-tab" role="tab" data-set-brand="plt" aria-selected="true"><img src="assets/brand-icons/plt.png" alt="" /><span>PLT</span></button>
+        <button class="brand-tab" role="tab" data-set-brand="debenhams" aria-selected="false"><img src="assets/brand-icons/debenhams.png" alt="" /><span>Debenhams</span></button>
+        <button class="brand-tab" role="tab" data-set-brand="boohoo" aria-selected="false"><img src="assets/brand-icons/boohoo.png" alt="" /><span>boohoo</span></button>
+        <button class="brand-tab" role="tab" data-set-brand="boohooman" aria-selected="false"><img src="assets/brand-icons/boohooman.png" alt="" /><span>boohooMAN</span></button>
+        <button class="brand-tab" role="tab" data-set-brand="karenmillen" aria-selected="false"><img src="assets/brand-icons/karenmillen.png" alt="" /><span>Karen Millen</span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero__inner">
+    <span class="lib-logo"><img id="brand-logo" src="assets/logos/plt.svg" alt="brand wordmark" /></span>
+    <div class="hero__meta chrome" id="brand-meta"></div>
+  </div>
+</div>
+
+<main class="lib">
+
+  <section class="lib-group">
+    <div class="lib-group__head chrome"><h2>Foundations</h2><p>Colour and type, straight from the DS token collection</p></div>
+    <div class="lib-grid lib-grid--foundations">
+
+      <section class="lib-section">
+        <h3 class="chrome">Colours — DS collection</h3>
+        <div class="panel">
+          <div class="swatch-grid" id="swatches"></div>
+        </div>
+      </section>
+
+      <section class="lib-section">
+        <h3 class="chrome">Type scale</h3>
+        <div class="panel">
+          <div class="t-display">Display 32</div>
+          <div class="t-h1">Heading 28</div>
+          <div class="t-h2">Heading 22</div>
+          <div class="t-h3">Heading 18</div>
+          <div class="t-body-lg">Body large 16</div>
+          <div class="t-body">Body 14 — the core reading size</div>
+          <div class="t-body-md">Body medium 14</div>
+          <div class="t-body-b">Body bold 14</div>
+          <div class="t-caption">Caption 12 — the minimum</div>
+          <div class="t-price">£24.00</div>
+          <div class="t-roundel">Roundel label 22</div>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+  <section class="lib-group">
+    <div class="lib-group__head chrome"><h2>Core components</h2><p>Buttons, cards and selectors</p></div>
+    <div class="lib-grid">
+
+      <section class="lib-section">
+        <h3 class="chrome">Buttons</h3>
+        <div class="panel">
+          <button class="btn btn--buy">Buy it now CTA</button>
+          <button class="btn btn--buy" disabled>Buy it now CTA</button>
+          <button class="btn btn--primary">Primary CTA</button>
+          <button class="btn btn--primary" disabled>Primary CTA</button>
+          <button class="btn btn--secondary">Secondary CTA</button>
+          <button class="btn btn--secondary" disabled>Secondary CTA</button>
+          <div class="inline">
+            <button class="btn btn--tertiary">Tertiary CTA</button>
+            <button class="btn btn--tertiary" disabled>Tertiary CTA</button>
+            <button class="btn btn--tertiary-xs">XS CTA</button>
+          </div>
+          <button class="btn btn--text">Text Only CTA</button>
+          <button class="btn btn--primary"><i class="icon-16" data-icon="ds-lock-fill"></i>Checkout securely</button>
+          <button class="btn btn--secondary"><i class="icon-24" data-icon="ds-tick"></i>Added</button>
+        </div>
+      </section>
+
+      <section class="lib-section">
+        <h3 class="chrome">Payment buttons</h3>
+        <div class="panel">
+          <button class="pay-btn pay-btn--yellow"><img src="assets/payments/bnpl-paypal-logo.svg" height="20" alt="PayPal" /></button>
+          <button class="pay-btn pay-btn--black"><img src="assets/payments/applepay-onblack.svg" height="22" alt="Apple Pay" /></button>
+          <button class="pay-btn pay-btn--white"><img src="assets/payments/applepay-onwhite.svg" height="22" alt="Apple Pay" /></button>
+          <button class="pay-btn pay-btn--black"><img src="assets/payments/gpay-g.svg" height="20" alt="" /><img src="assets/payments/gpay-word-onblack.svg" height="23" alt="Google Pay" /></button>
+          <button class="pay-btn pay-btn--klarna"><span>Pay with</span><img src="assets/payments/klarna-badge.svg" height="29" alt="Klarna" /></button>
+          <button class="pay-btn pay-btn--clearpay"><img src="assets/payments/clearpay-lockup.svg" height="26" alt="Clearpay" /></button>
+          <div class="inline">
+            <button class="pay-btn pay-btn--mini pay-btn--klarna"><img src="assets/payments/klarna-badge-mini.svg" height="30" alt="Klarna" /></button>
+            <button class="pay-btn pay-btn--mini pay-btn--clearpay"><img src="assets/payments/clearpay-lockup-mini.svg" height="16" alt="Clearpay" /></button>
+          </div>
+          <span class="note">glass (radius + fill only)</span>
+          <button class="pay-btn pay-btn--black pay-btn--glass"><img src="assets/payments/applepay-onblack.svg" height="22" alt="Apple Pay" /></button>
+        </div>
+      </section>
+
+      <section class="lib-section">
+        <h3 class="chrome">Product card</h3>
+        <div class="panel" style="align-items:flex-start">
+          <div class="card">
+            <div class="card__image" style="background:linear-gradient(160deg,var(--light-4),var(--neutral) 55%,var(--neutral-pressed))">
+              <div class="card__actions">
+                <button class="card__action" aria-label="Add to wishlist"><i data-icon="ds-wishlist"></i></button>
+                <button class="card__action" aria-label="Quick add"><i data-icon="ds-quick-add"></i></button>
+              </div>
+              <span class="card__tag">Petite</span>
+            </div>
+            <div>
+              <div class="card__brand" data-brand-name></div>
+              <p class="card__title caps">Stripe Button Jacket Coord</p>
+              <div class="card__price-row">
+                <span class="card__price">£38.50</span>
+                <span class="card__was">£55.00</span>
+                <span class="card__saving">-30%</span>
+              </div>
+              <div class="card__swatches" style="margin-top:8px">
+                <button class="card__swatch card__swatch--selected"><i style="background:#B97A57"></i></button>
+                <button class="card__swatch"><i style="background:#242424"></i></button>
+                <button class="card__swatch"><i style="background:#E7ADA2"></i></button>
+                <span>+5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lib-section">
+        <h3 class="chrome">Size selector</h3>
+        <div class="panel">
+          <div class="sizes__header"><span>Select Size</span><span>Size Guide</span></div>
+          <div class="sizes">
+            <button class="size">6</button>
+            <button class="size size--selected">8</button>
+            <button class="size">10</button>
+            <button class="size size--oos">12</button>
+            <button class="size">One Size</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="lib-section">
+        <h3 class="chrome">Roundels strip</h3>
+        <div class="panel">
+          <div class="roundels">
+            <button class="roundel roundel--label" style="background:var(--primary)"><span class="t-roundel">Sale</span></button>
+            <button class="roundel roundel--label" style="background:var(--dark-1)"><span class="t-roundel">New In</span></button>
+            <button class="roundel"><span class="t-roundel" style="position:relative;z-index:1;color:var(--ink)">Denim</span></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="lib-section">
+        <h3 class="chrome">BNPL</h3>
+        <div class="panel">
+          <div class="bnpl">
+            <div class="bnpl__chips">
+              <span class="bnpl__chip bnpl__chip--payplus"><img src="assets/payments/bnpl-payplus-glyph.svg" alt="Pay+" /></span>
+              <span class="bnpl__chip bnpl__chip--klarna"><img src="assets/payments/bnpl-klarna-word.svg" alt="Klarna" /></span>
+              <span class="bnpl__chip bnpl__chip--clearpay"><img src="assets/payments/clearpay-lockup-mini.svg" alt="Clearpay" /></span>
+              <span class="bnpl__chip bnpl__chip--paypal"><img src="assets/payments/bnpl-paypal-logo.svg" alt="PayPal" /></span>
+            </div>
+            <span class="bnpl__small">18+, T&amp;C apply. Credit subject to status</span>
+            <span class="bnpl__link" style="color:var(--black)">See more</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+  <section class="lib-group">
+    <div class="lib-group__head chrome"><h2>Delivery &amp; USP</h2><p>Messaging, thresholds and the live countdown banner</p></div>
+    <div class="lib-grid">
+
+      <section class="lib-section">
+        <h3 class="chrome">USP box</h3>
+        <div class="panel">
+          <div class="usp-box">
+            <div class="usp-box__row"><i data-icon="ds-delivery"></i>
+              <div><div class="usp-box__title">Sold &amp; Delivered by <span data-brand-name></span></div>
+              <div class="usp-box__sub">Delivery lead times and exclusions apply. See more</div></div>
+            </div>
+            <div class="usp-box__row"><i data-icon="ds-order"></i>
+              <div class="usp-box__title">Free delivery on all orders over £30</div>
+            </div>
+            <div class="usp-box__row"><i data-icon="ds-time"></i>
+              <div><div class="usp-box__title">Standard returns within 28 days</div>
+              <div class="usp-box__sub">Exclusions apply. Please see our returns policy</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lib-section">
+        <h3 class="chrome">USP banner — live countdown</h3>
+        <div class="panel">
+          <div class="usp-banner usp-banner--dark">
+            <div class="usp-banner__line">ORDER BY MIDNIGHT FOR NEXT DAY DELIVERY</div>
+            <div class="usp-banner__countdown" data-countdown>00:00:00:00</div>
+          </div>
+          <div class="usp-banner">
+            <div class="usp-banner__line">ORDER BY MIDNIGHT FOR NEXT DAY DELIVERY</div>
+            <div class="usp-banner__countdown" data-countdown>00:00:00:00</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lib-section">
+        <h3 class="chrome">Free delivery threshold</h3>
+        <div class="panel">
+          <div class="threshold">
+            <div class="threshold__copy">Spend <b>£13.00</b> more for free delivery</div>
+            <div class="threshold__track"><div class="threshold__fill" style="width:57%"></div></div>
+          </div>
+          <div class="threshold threshold--eligible">
+            <i data-icon="ds-tick" style="color:var(--dark-3)"></i>
+            <div class="threshold__copy">Congratulations, you're eligible for free delivery</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+  <section class="lib-group">
+    <div class="lib-group__head chrome"><h2>Deliver+</h2><p>Per-brand SEEL placements — PDP, checkout and bag</p></div>
+    <div class="lib-grid">
+
+      <section class="lib-section">
+        <h3 class="chrome">PDP banner</h3>
+        <div class="panel">
+          <div class="seel-banner">
+            <div class="seel-banner__col">
+              <span data-lockup></span>
+              <p class="seel-banner__headline" data-seel-headline>Elevate Your Experience</p>
+              <div class="seel-banner__ticks" data-seel-ticks>
+                <div class="seel-banner__tick"><i data-icon="ds-tick"></i>+14-day return extension</div>
+                <div class="seel-banner__tick"><i data-icon="ds-tick"></i>£5/day late delivery compensation</div>
+                <div class="seel-banner__tick"><i data-icon="ds-tick"></i>Full order coverage (lost, stolen, damaged) with instant payout on eligible claims</div>
+              </div>
+              <div class="seel-banner__pitch-wrap" data-seel-pitch hidden>
+                <p class="seel-banner__pitch">Protect your order <b>from</b> <b>£2.99</b>.</p>
+                <p class="seel-banner__pitch-sub">Get 35-day returns, £5/day late delivery compensation and much more.</p>
+              </div>
+              <span class="seel-banner__learn">Learn more</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lib-section">
+        <h3 class="chrome">Checkout opt-in</h3>
+        <div class="panel">
+          <div class="seel-banner">
+            <button class="seel-banner__check" role="checkbox" aria-checked="true"><i data-icon="ds-tick" style="color:var(--seel-on-check)"></i></button>
+            <div class="seel-banner__col">
+              <span data-lockup></span>
+              <p class="seel-banner__headline" data-seel-headline-priced>Elevate Your Experience for £2.99.</p>
+              <div class="seel-banner__ticks" data-seel-ticks>
+                <div class="seel-banner__tick"><i data-icon="ds-tick"></i>+14-day return extension</div>
+                <div class="seel-banner__tick"><i data-icon="ds-tick"></i>£5/day late delivery compensation</div>
+                <div class="seel-banner__tick"><i data-icon="ds-tick"></i>Full order coverage (lost, stolen, damaged) with instant payout on eligible claims</div>
+              </div>
+              <div data-seel-pitch hidden>
+                <p class="seel-banner__pitch">Protect your order <b>from</b> <b>£2.99</b>.</p>
+                <p class="seel-banner__pitch-sub">Get 35-day returns, £5/day late delivery compensation and much more.</p>
+              </div>
+              <span class="seel-banner__learn">Learn more</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lib-section">
+        <h3 class="chrome">Bag module</h3>
+        <div class="panel">
+          <div class="seel-module">
+            <div class="seel-module__band">
+              <span data-lockup></span>
+              <p class="seel-banner__headline">Elevate Your Experience</p>
+            </div>
+            <div class="seel-module__body">
+              <div class="seel-module__row"><span class="seel-module__puck"><img src="assets/seel/dp-calendar.png" alt="" /></span>
+                <div><p class="seel-module__title">35-day extended returns</p><p class="seel-module__sub">Extra 14 days on top of our standard 21-day window.</p></div></div>
+              <div class="seel-module__row seel-module__row--holiday"><span class="seel-module__puck"><img src="assets/seel/dp-plane.png" alt="" /></span>
+                <div><p class="seel-module__title">Win a Holiday worth £15k!</p><p class="seel-module__sub">With every Deliver+ purchase you will be entered into a prize draw to win a holiday of your choice, worth up to £15k!</p></div></div>
+              <div class="seel-module__row"><span class="seel-module__puck"><img src="assets/seel/dp-compensation.png" alt="" /></span>
+                <div><p class="seel-module__title">£5 per day late delivery compensation</p><p class="seel-module__sub">£5 paid for every day your order arrives late, up to a maximum of £25.</p></div></div>
+              <div class="seel-module__row"><span class="seel-module__puck"><img src="assets/seel/dp-cover.png" alt="" /></span>
+                <div><p class="seel-module__title">Lost &amp; stolen cover</p><p class="seel-module__sub">Full, rapid refund if your parcel goes missing in transit or is stolen after delivery.</p></div></div>
+              <div class="seel-module__row"><span class="seel-module__puck"><img src="assets/seel/dp-support.png" alt="" /></span>
+                <div><p class="seel-module__title">Instant support</p><p class="seel-module__sub">Dedicated online help when you need it.</p></div></div>
+              <div class="seel-module__row"><span class="seel-module__puck"><span class="badge-48"><img src="assets/seel/badge-48hr-circle.svg" alt="" /><b>48</b></span></span>
+                <div><p class="seel-module__title">48hr payout policy</p><p class="seel-module__sub">Eligible claims are paid within 48 hours.</p></div></div>
+              <div class="seel-module__powered">Powered by <img src="assets/seel/seel-logo.png" alt="Seel" /></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+  <section class="lib-group">
+    <div class="lib-group__head chrome"><h2>Account &amp; states</h2><p>Rewards, account rows and empty states</p></div>
+    <div class="lib-grid">
+
+      <section class="lib-section">
+        <h3 class="chrome">Account — rewards + rows</h3>
+        <div class="panel">
+          <div class="rewards" data-rewards>
+            <span class="rewards__label">ACCOUNT BALANCE</span>
+            <span class="rewards__amount">£100<small>.18</small></span>
+          </div>
+          <div class="acc-row"><span class="acc-row__icon"><i data-icon="ds-order"></i></span>Order History</div>
+          <div class="acc-row"><span class="acc-row__icon"><i data-icon="ds-account"></i></span>My Details</div>
+          <div class="acc-row"><span class="acc-row__icon"><i data-icon="ds-addresses"></i></span>Addresses</div>
+          <div class="acc-row"><span class="acc-row__icon"><i data-icon="ds-unlimited"></i></span><span data-loyalty>Royalty</span><span class="acc-row__badge">ACTIVE</span></div>
+          <div class="acc-row"><span class="acc-row__icon"><i data-icon="ds-support"></i></span>Contact Preferences</div>
+        </div>
+      </section>
+
+      <section class="lib-section">
+        <h3 class="chrome">Empty state</h3>
+        <div class="panel">
+          <div class="empty">
+            <i data-icon="ds-bag"></i>
+            <p>Your bag is empty</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+</main>
+
+<script src="js/ds-icons.js"></script>
+<script src="js/library.js"></script>
+</body>
+</html>
